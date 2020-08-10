@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--Created:ce44715c-8c4e-446b-879c-ea9ebe0f09c8-->
+<OfficeApp 
+          xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" 
+          xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" 
+          xsi:type="MailApp">
+
+  <!-- Begin Basic Settings: Add-in metadata, used for all versions of Office unless override provided. -->
+
+  <!-- IMPORTANT! Id must be unique for your add-in, if you reuse this manifest ensure that you change this id to a new GUID. -->
+  <Id>2301e3de-f364-4dd4-bda3-c7544abde45f</Id>
+
+  <!--Version. Updates from the store only get triggered if there is a version change. -->
+  <Version>1.0.0.0</Version>
+  <ProviderName>Smart Business</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
+  <DisplayName DefaultValue="OutlookWebAddIn4" />
+  <Description DefaultValue="OutlookWebAddIn4"/>
+  <IconUrl DefaultValue="~remoteAppUrl/Images/icon64.png"/>
+
+  <SupportUrl DefaultValue="http://www.contoso.com" />
+  <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
+  <AppDomains>
+ 
+		<AppDomain>https://login.microsoftonline.com/common</AppDomain>
+	  <AppDomain>https://autologon.microsoftazuread-sso.com</AppDomain>
+    <AppDomain>https://device.login.microsoftonline.com</AppDomain>
+  </AppDomains>
+  <!--End Basic Settings. -->
+  
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="~remoteAppUrl/"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+	  <Form xsi:type="ItemEdit">
+		  <DesktopSettings>
+			  <SourceLocation DefaultValue="~remoteAppUrl/"/>
+		  </DesktopSettings>
+	  </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+	
+		  <Requirements>
+			  <bt:Sets DefaultMinVersion="1.3">
+				  <bt:Set Name="Mailbox" />
+			  </bt:Sets>
+		  </Requirements>
+		  <Hosts>
+			  <Host xsi:type="MailHost">
+
+				  <DesktopFormFactor>
+					  <!-- Location of the Functions that UI-less buttons can trigger (ExecuteFunction Actions). -->
+					  <FunctionFile resid="functionFile" />
+
+					  <!-- Message Read -->
+					  <ExtensionPoint xsi:type="MessageReadCommandSurface">
+						  <!-- Use the default tab of the ExtensionPoint or create your own with <CustomTab id="myTab"> -->
+						  <OfficeTab id="TabDefault">
+							  <!-- Up to 6 Groups added per Tab -->
+							  <Group id="msgReadGroup">
+								  <Label resid="groupLabel" />
+								  <!-- Launch the add-in : task pane button -->
+								  <Control xsi:type="Button" id="msgReadOpenPaneButton">
+									  <Label resid="paneReadButtonLabel" />
+									  <Supertip>
+										  <Title resid="paneReadSuperTipTitle" />
+										  <Description resid="paneReadSuperTipDescription" />
+									  </Supertip>
+									  <Icon>
+										  <bt:Image size="16" resid="icon16" />
+										  <bt:Image size="32" resid="icon32" />
+										  <bt:Image size="80" resid="icon80" />
+									  </Icon>
+									  <Action xsi:type="ShowTaskpane">
+										  <SourceLocation resid="messageReadTaskPaneUrl" />
+									  </Action>
+								  </Control>
+								  <!-- Go to http://aka.ms/ButtonCommands to learn how to add more Controls: ExecuteFunction and Menu -->
+							  </Group>
+						  </OfficeTab>
+					  </ExtensionPoint>
+					  <!-- Go to http://aka.ms/ExtensionPointsCommands to learn how to add more Extension Points: MessageRead, AppointmentOrganizer, AppointmentAttendee -->
+				  </DesktopFormFactor>
+			  </Host>
+		  </Hosts>
+
+		  <Resources>
+			  <bt:Images>
+				  <bt:Image id="icon16" DefaultValue="~remoteAppUrl/Images/icon16.png"/>
+				  <bt:Image id="icon32" DefaultValue="~remoteAppUrl/Images/icon32.png"/>
+				  <bt:Image id="icon80" DefaultValue="~remoteAppUrl/Images/icon80.png"/>
+			  </bt:Images>
+			  <bt:Urls>
+				  <bt:Url id="functionFile" DefaultValue="~remoteAppUrl/Controllers/HomeController.cs"/>
+				  <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/Views/Home/Home.cshtml"/>
+			  </bt:Urls>
+			  <bt:ShortStrings>
+				  <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
+				  <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
+				  <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
+				  <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
+			  </bt:ShortStrings>
+			  <bt:LongStrings>
+				  <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
+			  </bt:LongStrings>
+		  </Resources>
+
+
+	  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+		  <Description resid="residDescription" />
+		 
+		  <Hosts>
+			  <Host xsi:type="MailHost">
+
+				  <DesktopFormFactor>
+					  <!-- Location of the Functions that UI-less buttons can trigger (ExecuteFunction Actions). -->
+					  <FunctionFile resid="functionFile" />
+
+					  <!-- Message Read -->
+					  <ExtensionPoint xsi:type="MessageReadCommandSurface">
+						  <!-- Use the default tab of the ExtensionPoint or create your own with <CustomTab id="myTab"> -->
+						  <OfficeTab id="TabDefault">
+							  <!-- Up to 6 Groups added per Tab -->
+							  <Group id="msgReadGroup">
+								  <Label resid="groupLabel" />
+								  <!-- Launch the add-in : task pane button -->
+								  <Control xsi:type="Button" id="msgReadOpenPaneButton">
+									  <Label resid="paneReadButtonLabel" />
+									  <Supertip>
+										  <Title resid="paneReadSuperTipTitle" />
+										  <Description resid="paneReadSuperTipDescription" />
+									  </Supertip>
+									  <Icon>
+										  <bt:Image size="16" resid="icon16" />
+										  <bt:Image size="32" resid="icon32" />
+										  <bt:Image size="80" resid="icon80" />
+									  </Icon>
+									  <Action xsi:type="ShowTaskpane">
+										  <SourceLocation resid="messageReadTaskPaneUrl" />
+									  </Action>
+								  </Control>
+								  <!-- Go to http://aka.ms/ButtonCommands to learn how to add more Controls: ExecuteFunction and Menu -->
+							  </Group>
+						  </OfficeTab>
+					  </ExtensionPoint>
+					  <!-- Go to http://aka.ms/ExtensionPointsCommands to learn how to add more Extension Points: MessageRead, AppointmentOrganizer, AppointmentAttendee -->
+				  </DesktopFormFactor>
+			  </Host>
+		  </Hosts>
+		  <Resources>
+			  <bt:Images>
+				  <bt:Image id="icon16" DefaultValue="~remoteAppUrl/Images/icon16.png"/>
+				  <bt:Image id="icon32" DefaultValue="~remoteAppUrl/Images/icon32.png"/>
+				  <bt:Image id="icon80" DefaultValue="~remoteAppUrl/Images/icon80.png"/>
+			  </bt:Images>
+			  <bt:Urls>
+				  <bt:Url id="functionFile" DefaultValue="~remoteAppUrl/"/>
+				  <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/"/>
+				  <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/"/>
+			  </bt:Urls>
+			  <bt:ShortStrings>
+				  <bt:String id="groupLabel" DefaultValue="My Add-in Group"/>
+				  <bt:String id="customTabLabel"  DefaultValue="My Add-in Tab"/>
+				  <bt:String id="paneReadButtonLabel" DefaultValue="Display all properties"/>
+				  <bt:String id="paneReadSuperTipTitle" DefaultValue="Get all properties"/>
+			  </bt:ShortStrings>
+			  <bt:LongStrings>
+				  <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens a pane displaying all available properties. This is an example of a button that opens a task pane."/>
+			  </bt:LongStrings>
+		  </Resources>
+		  <WebApplicationInfo>
+			  <Id>b2cff0cb-16be-4c6f-8aa8-cbd7f5e5a77c</Id>
+			  <Resource>api://localhost:44344/b2cff0cb-16be-4c6f-8aa8-cbd7f5e5a77c</Resource>
+			  <Scopes>
+				  <Scope>user_impersonation</Scope>
+				  <Scope>Files.Read.All</Scope>
+				  <Scope>offline_access</Scope>
+				  <Scope>openid</Scope>
+				  <Scope>profile</Scope>
+			  </Scopes>
+		  </WebApplicationInfo>
+
+	  </VersionOverrides>
+	  </VersionOverrides>
+</OfficeApp>
